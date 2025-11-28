@@ -1,0 +1,9 @@
+{
+	"name": "azureuaenorthfactory1",
+	"location": "mexicocentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "a64a1053-fec1-487e-a322-bccfdd1ec775",
+		"tenantId": "dd38351f-93e5-4472-99a8-f3a4543650f6"
+	}
+}

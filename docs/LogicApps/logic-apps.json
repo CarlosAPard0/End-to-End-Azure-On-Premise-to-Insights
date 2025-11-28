@@ -1,0 +1,71 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "triggers": {
+            "When_an_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "inputs": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "pipelineName": {
+                                "type": "string"
+                            },
+                            "status": {
+                                "type": "string"
+                            },
+                            "runId": {
+                                "type": "string"
+                            },
+                            "time": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "actions": {
+            "Enviar_correo_electrónico_(V2)": {
+                "type": "ApiConnection",
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['gmail']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "body": {
+                        "To": "carlosandrespardocastro@gmail.com",
+                        "Subject": "Pipeline Report",
+                        "Body": "<p class=\"editor-paragraph\">Pipeline Details:</p><br><p class=\"editor-paragraph\">Name:@{triggerBody()?['pipelineName']}</p><p class=\"editor-paragraph\">Status:@{triggerBody()?['status']}</p><p class=\"editor-paragraph\">ID:@{triggerBody()?['runId']}</p><p class=\"editor-paragraph\">Time:@{triggerBody()?['time']}</p>"
+                    },
+                    "path": "/v2/Mail"
+                },
+                "runAfter": {}
+            }
+        },
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "type": "Object",
+                "defaultValue": {}
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "type": "Object",
+            "value": {
+                "gmail": {
+                    "id": "/subscriptions/cceea976-a0d6-4d5b-af03-2ebfd121f397/providers/Microsoft.Web/locations/mexicocentral/managedApis/gmail",
+                    "connectionId": "/subscriptions/cceea976-a0d6-4d5b-af03-2ebfd121f397/resourceGroups/azure-uaenorth-rg/providers/Microsoft.Web/connections/gmail",
+                    "connectionName": "gmail",
+                    "connectionProperties": {}
+                }
+            }
+        }
+    }
+}
